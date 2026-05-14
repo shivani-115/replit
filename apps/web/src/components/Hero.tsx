@@ -13,9 +13,9 @@ export default function Hero() {
           <span className="text-brand">NestJS</span> &amp; Prisma.
         </h1>
         <p className="max-w-2xl text-base text-slate-600 md:text-lg">
-          A simple, fast portfolio template wired up to a real REST API.
-          Browse projects, get in touch, or jump into the admin panel to
-          add new work.
+          Featured work, a contact flow, and a small admin—everything runs
+          through a live REST API with NestJS and Prisma. Browse the
+          projects, say hello, or publish new pieces from the panel.
         </p>
         <div className="flex flex-wrap gap-3">
           <Link
