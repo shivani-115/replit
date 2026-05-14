@@ -10,7 +10,8 @@ export default function Hero() {
         <h1 className="max-w-3xl text-4xl font-bold leading-tight tracking-tight text-slate-900 md:text-6xl">
           Building things with{' '}
           <span className="text-brand">Next.js</span>,{' '}
-          <span className="text-brand">NestJS</span> &amp; Prisma.
+          <span className="text-brand">NestJS</span> &amp;{' '}
+          <span className="text-brand">Prisma</span>.
         </h1>
         <p className="max-w-2xl text-base text-slate-600 md:text-lg">
           Featured work, a contact flow, and a small admin—everything runs
