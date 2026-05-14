@@ -6,7 +6,8 @@ import type {
 } from '@portfolio/shared';
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api';
+  process.env.NEXT_PUBLIC_API_URL ??
+  (typeof window === 'undefined' ? 'http://127.0.0.1:8000/api' : '/api');
 
 async function handle<T>(res: Response): Promise<T> {
   if (!res.ok) {

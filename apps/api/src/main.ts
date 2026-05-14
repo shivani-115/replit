@@ -23,7 +23,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const port = config.get<number>('PORT', 4000);
-  await app.listen(port);
+  await app.listen(port, '127.0.0.1');
 
   console.log(`API running at http://localhost:${port}/api`);
 }
