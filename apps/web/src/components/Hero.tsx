@@ -7,16 +7,16 @@ export default function Hero() {
         <span className="rounded-full border border-brand/20 bg-white px-3 py-1 text-xs font-medium text-brand">
           Live · Portfolio POC
         </span>
-        <h1 className="max-w-3xl text-4xl font-bold leading-tight tracking-tight text-slate-900 md:text-6xl">
-          Building things with{' '}
-          <span className="text-brand">Next.js</span>,{' '}
-          <span className="text-brand">NestJS</span> &amp;{' '}
-          <span className="text-brand">Prisma</span>.
+        <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 md:text-6xl lg:text-7xl">
+          Ship products people{' '}
+          <span className="bg-gradient-to-r from-brand to-violet-500 bg-clip-text text-transparent">
+            actually want to use
+          </span>
+          .
         </h1>
         <p className="max-w-2xl text-base text-slate-600 md:text-lg">
-          Featured work, a contact flow, and a small admin—everything runs
-          through a live REST API with NestJS and Prisma. Browse the
-          projects, say hello, or publish new pieces from the panel.
+          A full-stack portfolio demo—browse projects, send a message, or
+          manage content from the admin panel.
         </p>
         <div className="flex flex-wrap gap-3">
           <Link
