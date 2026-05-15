@@ -6,6 +6,7 @@ import {
   createProject,
   deleteProject,
   getProjects,
+  updateProject,
 } from '@/lib/api';
 import ProjectCard from '@/components/ProjectCard';
 
@@ -23,6 +24,7 @@ export default function AdminPage() {
   const [form, setForm] = useState(emptyForm);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
 
   async function loadProjects() {
     setLoading(true);
@@ -41,17 +43,49 @@ export default function AdminPage() {
     loadProjects();
   }, []);
 
+  function handleEdit(project: Project) {
+    setEditingProject(project);
+    setForm({
+      title: project.title,
+      description: project.description,
+      techStack: project.techStack,
+      githubUrl: project.githubUrl,
+    });
+    setFormError(null);
+  }
+
+  function handleCancelEdit() {
+    setEditingProject(null);
+    setForm(emptyForm);
+    setFormError(null);
+  }
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitting(true);
     setFormError(null);
 
     try {
-      await createProject(form);
-      setForm(emptyForm);
-      await loadProjects();
+      if (editingProject) {
+        const updated = await updateProject(editingProject.id, form);
+        setProjects((prev) =>
+          prev.map((p) => (p.id === updated.id ? updated : p)),
+        );
+        setEditingProject(null);
+        setForm(emptyForm);
+      } else {
+        await createProject(form);
+        setForm(emptyForm);
+        await loadProjects();
+      }
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Failed to create');
+      setFormError(
+        err instanceof Error
+          ? err.message
+          : editingProject
+            ? 'Failed to update'
+            : 'Failed to create',
+      );
     } finally {
       setSubmitting(false);
     }
@@ -62,10 +96,16 @@ export default function AdminPage() {
     try {
       await deleteProject(id);
       setProjects((prev) => prev.filter((p) => p.id !== id));
+      if (editingProject?.id === id) {
+        setEditingProject(null);
+        setForm(emptyForm);
+      }
     } catch (e) {
       alert(e instanceof Error ? e.message : 'Failed to delete project');
     }
   }
+
+  const isEditing = editingProject !== null;
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
@@ -83,9 +123,26 @@ export default function AdminPage() {
           onSubmit={handleSubmit}
           className="h-fit space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
         >
-          <h2 className="text-lg font-semibold text-slate-900">
-            Add Project
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-slate-900">
+              {isEditing ? 'Edit Project' : 'Add Project'}
+            </h2>
+            {isEditing && (
+              <button
+                type="button"
+                onClick={handleCancelEdit}
+                className="text-sm text-slate-500 hover:text-slate-700"
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+
+          {isEditing && (
+            <p className="rounded-md bg-brand/10 px-3 py-2 text-xs text-brand">
+              Editing: <span className="font-semibold">{editingProject.title}</span>
+            </p>
+          )}
 
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700">
@@ -159,7 +216,11 @@ export default function AdminPage() {
             disabled={submitting}
             className="w-full rounded-md bg-brand px-4 py-2.5 text-sm font-medium text-white transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {submitting ? 'Saving...' : 'Add Project'}
+            {submitting
+              ? 'Saving...'
+              : isEditing
+                ? 'Save Changes'
+                : 'Add Project'}
           </button>
         </form>
 
@@ -198,6 +259,7 @@ export default function AdminPage() {
                 <ProjectCard
                   key={p.id}
                   project={p}
+                  onEdit={handleEdit}
                   onDelete={handleDelete}
                 />
               ))}

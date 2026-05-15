@@ -3,6 +3,7 @@ import type {
   Contact,
   CreateProjectInput,
   CreateContactInput,
+  UpdateProjectInput,
 } from '@portfolio/shared';
 
 const API_URL =
@@ -27,6 +28,18 @@ export async function createProject(
 ): Promise<Project> {
   const res = await fetch(`${API_URL}/projects`, {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  });
+  return handle<Project>(res);
+}
+
+export async function updateProject(
+  id: string,
+  input: UpdateProjectInput,
+): Promise<Project> {
+  const res = await fetch(`${API_URL}/projects/${id}`, {
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),
   });

@@ -3,9 +3,10 @@ import type { Project } from '@portfolio/shared';
 type Props = {
   project: Project;
   onDelete?: (id: string) => void;
+  onEdit?: (project: Project) => void;
 };
 
-export default function ProjectCard({ project, onDelete }: Props) {
+export default function ProjectCard({ project, onDelete, onEdit }: Props) {
   const techs = project.techStack
     .split(',')
     .map((t) => t.trim())
@@ -17,14 +18,24 @@ export default function ProjectCard({ project, onDelete }: Props) {
         <h3 className="text-lg font-semibold text-slate-900">
           {project.title}
         </h3>
-        {onDelete && (
-          <button
-            onClick={() => onDelete(project.id)}
-            className="rounded-md border border-red-200 px-2 py-1 text-xs font-medium text-red-600 transition hover:bg-red-50"
-          >
-            Delete
-          </button>
-        )}
+        <div className="flex shrink-0 gap-2">
+          {onEdit && (
+            <button
+              onClick={() => onEdit(project)}
+              className="rounded-md border border-brand px-2 py-1 text-xs font-medium text-brand transition hover:bg-brand/10"
+            >
+              Edit
+            </button>
+          )}
+          {onDelete && (
+            <button
+              onClick={() => onDelete(project.id)}
+              className="rounded-md border border-red-200 px-2 py-1 text-xs font-medium text-red-600 transition hover:bg-red-50"
+            >
+              Delete
+            </button>
+          )}
+        </div>
       </div>
 
       <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
