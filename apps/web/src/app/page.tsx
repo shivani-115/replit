@@ -7,7 +7,7 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-6xl px-6 pb-20">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-xl border border-slate-200 bg-white p-6">
+          <div className="rounded-xl border border-slate-200 bg-white p-6 transition hover:border-brand/30 hover:shadow-md">
             <h3 className="text-base font-semibold text-slate-900">
               Monorepo
             </h3>
@@ -15,7 +15,7 @@ export default function HomePage() {
               pnpm workspaces + Turborepo run web and api side-by-side.
             </p>
           </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-6">
+          <div className="rounded-xl border border-slate-200 bg-white p-6 transition hover:border-brand/30 hover:shadow-md">
             <h3 className="text-base font-semibold text-slate-900">
               Type-safe
             </h3>
@@ -27,7 +27,7 @@ export default function HomePage() {
               package.
             </p>
           </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-6">
+          <div className="rounded-xl border border-slate-200 bg-white p-6 transition hover:border-brand/30 hover:shadow-md">
             <h3 className="text-base font-semibold text-slate-900">
               Prisma + PostgreSQL
             </h3>

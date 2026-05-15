@@ -16,7 +16,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link
           href="/"
@@ -53,7 +53,7 @@ export default function Navbar() {
                   href={l.href}
                   className={`text-sm font-medium transition-colors ${
                     active
-                      ? 'text-brand'
+                      ? 'text-brand underline decoration-2 underline-offset-4'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
