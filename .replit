@@ -56,3 +56,7 @@ exposeLocalhost = true
 deploymentTarget = "vm"
 run = ["pnpm", "run", "start:prod"]
 build = ["sh", "-c", "pnpm install && pnpm --filter api exec prisma generate && pnpm --filter api build && pnpm --filter web build"]
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 120000
