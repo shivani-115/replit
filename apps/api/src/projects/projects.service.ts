@@ -25,6 +25,7 @@ export class ProjectsService {
     return this.prisma.project.update({ where: { id }, data });
   }
 
+
   async remove(id: string) {
     const existing = await this.prisma.project.findUnique({ where: { id } });
     if (!existing) {

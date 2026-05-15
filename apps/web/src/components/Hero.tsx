@@ -2,21 +2,20 @@ import Link from 'next/link';
 
 export default function Hero() {
   return (
-    <section className="border-b border-slate-200/80 bg-gradient-to-b from-indigo-50/60 to-transparent">
-      <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-20 md:py-28">
-        <span className="rounded-full border border-brand/20 bg-white px-3 py-1 text-xs font-medium text-brand">
-          Live · Portfolio POC
+    <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+      <div className="flex flex-col items-start gap-6">
+        <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">
+          Portfolio POC · Monorepo
         </span>
-        <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 md:text-6xl lg:text-7xl">
-          Ship products people{' '}
-          <span className="bg-gradient-to-r from-brand to-violet-500 bg-clip-text text-transparent">
-            actually want to use
-          </span>
-          .
+        <h1 className="max-w-3xl text-4xl font-bold leading-tight tracking-tight text-slate-900 md:text-6xl">
+          Building things with{' '}
+          <span className="text-brand">Next.js</span>,{' '}
+          <span className="text-brand">NestJS</span> &amp; Prisma.
         </h1>
         <p className="max-w-2xl text-base text-slate-600 md:text-lg">
-          A full-stack portfolio demo—browse projects, send a message, or
-          manage content from the admin panel.
+          A simple, fast portfolio template wired up to a real REST API.
+          Browse projects, get in touch, or jump into the admin panel to
+          add new work.
         </p>
         <div className="flex flex-wrap gap-3">
           <Link

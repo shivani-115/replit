@@ -8,6 +8,7 @@ import {
   deleteProject,
   getProjects,
   updateProject,
+  ValidationError,
 } from '@/lib/api';
 import ProjectCard from '@/components/ProjectCard';
 
@@ -32,6 +33,7 @@ export default function AdminPage() {
   const [form, setForm] = useState(emptyForm);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [editingProject, setEditingProject] = useState<Project | null>(null);
 
   useEffect(() => {
@@ -89,12 +91,14 @@ export default function AdminPage() {
       githubUrl: project.githubUrl,
     });
     setFormError(null);
+    setFieldErrors({});
   }
 
   function handleCancelEdit() {
     setEditingProject(null);
     setForm(emptyForm);
     setFormError(null);
+    setFieldErrors({});
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -102,6 +106,7 @@ export default function AdminPage() {
     if (!token) return;
     setSubmitting(true);
     setFormError(null);
+    setFieldErrors({});
 
     try {
       if (editingProject) {
@@ -117,16 +122,22 @@ export default function AdminPage() {
         await loadProjects();
       }
     } catch (err) {
-      const msg =
-        err instanceof Error
-          ? err.message
-          : editingProject
-            ? 'Failed to update'
-            : 'Failed to create';
-      if (msg.includes('401')) {
-        setFormError('Session expired. Please log out and sign in again.');
+      if (err instanceof ValidationError) {
+        const { _general, ...perField } = err.fieldErrors;
+        setFieldErrors(perField);
+        if (_general) setFormError(_general);
       } else {
-        setFormError(msg);
+        const msg =
+          err instanceof Error
+            ? err.message
+            : editingProject
+              ? 'Failed to update'
+              : 'Failed to create';
+        if (msg.includes('401')) {
+          setFormError('Session expired. Please log out and sign in again.');
+        } else {
+          setFormError(msg);
+        }
       }
     } finally {
       setSubmitting(false);
@@ -174,7 +185,7 @@ export default function AdminPage() {
                 autoFocus
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
-                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
+                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
                 placeholder="Enter admin password"
               />
             </div>
@@ -188,7 +199,7 @@ export default function AdminPage() {
             <button
               type="submit"
               disabled={loginLoading}
-              className="w-full rounded-md bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-md bg-brand px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loginLoading ? 'Signing in…' : 'Sign in'}
             </button>
@@ -241,54 +252,89 @@ export default function AdminPage() {
           </div>
 
           {isEditing && (
-            <p className="rounded-md bg-violet-50 px-3 py-2 text-xs text-violet-700">
+            <p className="rounded-md bg-brand/10 px-3 py-2 text-xs text-brand">
               Editing: <span className="font-semibold">{editingProject.title}</span>
             </p>
           )}
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Title</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              Title
+            </label>
             <input
               required
               value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
+              onChange={(e) => {
+                setForm({ ...form, title: e.target.value });
+                if (fieldErrors.title) setFieldErrors((prev) => { const n = { ...prev }; delete n.title; return n; });
+              }}
+              className={`w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 ${fieldErrors.title ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : 'border-slate-300 focus:border-brand focus:ring-brand/20'}`}
             />
+            {fieldErrors.title && (
+              <p className="mt-1 text-xs text-red-600">{fieldErrors.title}</p>
+            )}
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Description</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              Description
+            </label>
             <textarea
               required
               rows={3}
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              className="w-full resize-y rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
+              onChange={(e) => {
+                setForm({ ...form, description: e.target.value });
+                if (fieldErrors.description) setFieldErrors((prev) => { const n = { ...prev }; delete n.description; return n; });
+              }}
+              className={`w-full resize-y rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 ${fieldErrors.description ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : 'border-slate-300 focus:border-brand focus:ring-brand/20'}`}
             />
+            {fieldErrors.description && (
+              <p className="mt-1 text-xs text-red-600">{fieldErrors.description}</p>
+            )}
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Tech stack</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              Tech stack
+            </label>
             <input
               required
               value={form.techStack}
-              onChange={(e) => setForm({ ...form, techStack: e.target.value })}
+              onChange={(e) => {
+                setForm({ ...form, techStack: e.target.value });
+                if (fieldErrors.techStack) setFieldErrors((prev) => { const n = { ...prev }; delete n.techStack; return n; });
+              }}
               placeholder="Next.js, NestJS, Prisma"
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
+              className={`w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 ${fieldErrors.techStack ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : 'border-slate-300 focus:border-brand focus:ring-brand/20'}`}
             />
-            <p className="mt-1 text-xs text-slate-500">Comma-separated list.</p>
+            {fieldErrors.techStack ? (
+              <p className="mt-1 text-xs text-red-600">{fieldErrors.techStack}</p>
+            ) : (
+              <p className="mt-1 text-xs text-slate-500">
+                Comma-separated list.
+              </p>
+            )}
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">GitHub URL</label>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              GitHub URL
+            </label>
             <input
               type="url"
               required
               value={form.githubUrl}
-              onChange={(e) => setForm({ ...form, githubUrl: e.target.value })}
+              onChange={(e) => {
+                setForm({ ...form, githubUrl: e.target.value });
+                if (fieldErrors.githubUrl) setFieldErrors((prev) => { const n = { ...prev }; delete n.githubUrl; return n; });
+              }}
               placeholder="https://github.com/user/repo"
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
+              className={`w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 ${fieldErrors.githubUrl ? 'border-red-400 focus:border-red-400 focus:ring-red-400/20' : 'border-slate-300 focus:border-brand focus:ring-brand/20'}`}
             />
+            {fieldErrors.githubUrl && (
+              <p className="mt-1 text-xs text-red-600">{fieldErrors.githubUrl}</p>
+            )}
           </div>
 
           {formError && (
@@ -300,7 +346,7 @@ export default function AdminPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-md bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-md bg-brand px-4 py-2.5 text-sm font-medium text-white transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? 'Saving…' : isEditing ? 'Save Changes' : 'Add Project'}
           </button>
@@ -308,16 +354,20 @@ export default function AdminPage() {
 
         <div>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-slate-900">All Projects</h2>
+            <h2 className="text-lg font-semibold text-slate-900">
+              All Projects
+            </h2>
             <button
               onClick={loadProjects}
-              className="text-sm font-medium text-violet-600 hover:text-violet-700"
+              className="text-sm font-medium text-brand hover:text-brand-dark"
             >
               Refresh
             </button>
           </div>
 
-          {loading && <p className="text-sm text-slate-500">Loading projects…</p>}
+          {loading && (
+            <p className="text-sm text-slate-500">Loading projects…</p>
+          )}
 
           {error && (
             <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
