@@ -67,13 +67,16 @@ export default function AdminPage() {
     }
   }
 
+  const inputClass =
+    'w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20';
+
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
       <header className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">
           Admin
         </h1>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-slate-600 dark:text-slate-400">
           Add and manage portfolio projects. No auth - POC only.
         </p>
       </header>
@@ -81,26 +84,26 @@ export default function AdminPage() {
       <div className="grid gap-10 lg:grid-cols-[400px,1fr]">
         <form
           onSubmit={handleSubmit}
-          className="h-fit space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+          className="h-fit space-y-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm"
         >
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
             Add Project
           </h2>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Title
             </label>
             <input
               required
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Description
             </label>
             <textarea
@@ -110,12 +113,12 @@ export default function AdminPage() {
               onChange={(e) =>
                 setForm({ ...form, description: e.target.value })
               }
-              className="w-full resize-y rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+              className={`${inputClass} resize-y`}
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Tech stack
             </label>
             <input
@@ -125,15 +128,15 @@ export default function AdminPage() {
                 setForm({ ...form, techStack: e.target.value })
               }
               placeholder="Next.js, NestJS, Prisma"
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+              className={inputClass}
             />
-            <p className="mt-1 text-xs text-slate-500">
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
               Comma-separated list.
             </p>
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
               GitHub URL
             </label>
             <input
@@ -144,12 +147,12 @@ export default function AdminPage() {
                 setForm({ ...form, githubUrl: e.target.value })
               }
               placeholder="https://github.com/user/repo"
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+              className={inputClass}
             />
           </div>
 
           {formError && (
-            <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p className="rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-400">
               {formError}
             </p>
           )}
@@ -165,7 +168,7 @@ export default function AdminPage() {
 
         <div>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-slate-900">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
               All Projects
             </h2>
             <button
@@ -177,17 +180,17 @@ export default function AdminPage() {
           </div>
 
           {loading && (
-            <p className="text-sm text-slate-500">Loading projects...</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Loading projects...</p>
           )}
 
           {error && (
-            <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <div className="rounded-lg border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-4 py-3 text-sm text-red-700 dark:text-red-400">
               {error}
             </div>
           )}
 
           {!loading && !error && projects.length === 0 && (
-            <div className="rounded-lg border border-dashed border-slate-300 bg-white px-6 py-10 text-center text-slate-500">
+            <div className="rounded-lg border border-dashed border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-6 py-10 text-center text-slate-500 dark:text-slate-400">
               No projects yet.
             </div>
           )}

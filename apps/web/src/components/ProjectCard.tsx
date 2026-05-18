@@ -12,22 +12,22 @@ export default function ProjectCard({ project, onDelete }: Props) {
     .filter(Boolean);
 
   return (
-    <article className="group flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <article className="group flex h-full flex-col rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
       <div className="flex items-start justify-between gap-3">
-        <h3 className="text-lg font-semibold text-slate-900">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
           {project.title}
         </h3>
         {onDelete && (
           <button
             onClick={() => onDelete(project.id)}
-            className="rounded-md border border-red-200 px-2 py-1 text-xs font-medium text-red-600 transition hover:bg-red-50"
+            className="rounded-md border border-red-200 dark:border-red-800 px-2 py-1 text-xs font-medium text-red-600 dark:text-red-400 transition hover:bg-red-50 dark:hover:bg-red-900/30"
           >
             Delete
           </button>
         )}
       </div>
 
-      <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+      <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
         {project.description}
       </p>
 
@@ -36,7 +36,7 @@ export default function ProjectCard({ project, onDelete }: Props) {
           {techs.map((t) => (
             <span
               key={t}
-              className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700"
+              className="rounded-full bg-slate-100 dark:bg-slate-700 px-2.5 py-0.5 text-xs font-medium text-slate-700 dark:text-slate-300"
             >
               {t}
             </span>

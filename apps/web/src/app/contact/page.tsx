@@ -28,20 +28,20 @@ export default function ContactPage() {
   return (
     <section className="mx-auto max-w-3xl px-6 py-16">
       <header className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">
           Contact
         </h1>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-slate-600 dark:text-slate-400">
           Have a question or proposal? Drop a message below.
         </p>
       </header>
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+        className="space-y-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm"
       >
         <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">
+          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Name
           </label>
           <input
@@ -49,13 +49,13 @@ export default function ContactPage() {
             required
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+            className="w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 px-3 py-2 text-sm shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             placeholder="Jane Doe"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">
+          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Email
           </label>
           <input
@@ -63,13 +63,13 @@ export default function ContactPage() {
             required
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+            className="w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 px-3 py-2 text-sm shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             placeholder="jane@example.com"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">
+          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Message
           </label>
           <textarea
@@ -77,7 +77,7 @@ export default function ContactPage() {
             rows={5}
             value={form.message}
             onChange={(e) => setForm({ ...form, message: e.target.value })}
-            className="w-full resize-y rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+            className="w-full resize-y rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 px-3 py-2 text-sm shadow-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             placeholder="Tell me about your project..."
           />
         </div>
@@ -91,13 +91,13 @@ export default function ContactPage() {
         </button>
 
         {status === 'success' && (
-          <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+          <p className="rounded-md border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-400">
             Thanks! Your message has been received.
           </p>
         )}
 
         {status === 'error' && (
-          <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p className="rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-400">
             {error}
           </p>
         )}

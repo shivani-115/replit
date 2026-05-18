@@ -14,9 +14,9 @@ const cards = [
     description: 'pnpm workspaces + Turborepo run web and api side-by-side.',
     detail: 'A single repo, two apps, zero duplication. Shared scripts, dependencies, and types keep everything in sync.',
     accent: 'from-blue-500 to-blue-700',
-    bg: 'hover:bg-blue-50',
-    border: 'hover:border-blue-300',
-    text: 'text-blue-600',
+    bg: 'hover:bg-blue-50 dark:hover:bg-blue-950/40',
+    border: 'hover:border-blue-300 dark:hover:border-blue-700',
+    text: 'text-blue-600 dark:text-blue-400',
   },
   {
     icon: (
@@ -29,14 +29,14 @@ const cards = [
     description: (
       <>
         Shared TypeScript types between Next.js and NestJS via the{' '}
-        <code className="rounded bg-slate-100 px-1 text-xs">@portfolio/shared</code> package.
+        <code className="rounded bg-slate-100 dark:bg-slate-700 px-1 text-xs">@portfolio/shared</code> package.
       </>
     ),
     detail: 'One source of truth for every model. If the API changes, the frontend TypeScript compiler tells you immediately.',
     accent: 'from-sky-500 to-blue-600',
-    bg: 'hover:bg-sky-50',
-    border: 'hover:border-sky-300',
-    text: 'text-sky-600',
+    bg: 'hover:bg-sky-50 dark:hover:bg-sky-950/40',
+    border: 'hover:border-sky-300 dark:hover:border-sky-700',
+    text: 'text-sky-600 dark:text-sky-400',
   },
   {
     icon: (
@@ -49,9 +49,9 @@ const cards = [
     description: 'A single Prisma schema models projects and contact form submissions.',
     detail: 'Type-safe database queries with Prisma ORM, backed by a managed PostgreSQL instance. Migrations are a one-liner.',
     accent: 'from-emerald-500 to-teal-600',
-    bg: 'hover:bg-emerald-50',
-    border: 'hover:border-emerald-300',
-    text: 'text-emerald-600',
+    bg: 'hover:bg-emerald-50 dark:hover:bg-emerald-950/40',
+    border: 'hover:border-emerald-300 dark:hover:border-emerald-700',
+    text: 'text-emerald-600 dark:text-emerald-400',
   },
 ];
 
@@ -68,7 +68,7 @@ export default function FeatureCards() {
               key={card.label}
               onClick={() => setExpanded(isOpen ? null : i)}
               className={[
-                'group relative flex flex-col items-start gap-3 rounded-xl border border-slate-200 bg-white p-6 text-left',
+                'group relative flex flex-col items-start gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 text-left',
                 'shadow-sm transition-all duration-200 cursor-pointer outline-none',
                 'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-400',
                 card.bg,
@@ -81,8 +81,8 @@ export default function FeatureCards() {
               </div>
 
               <div className="flex-1">
-                <h3 className="text-base font-semibold text-slate-900">{card.title}</h3>
-                <p className="mt-1 text-sm text-slate-600">{card.description}</p>
+                <h3 className="text-base font-semibold text-slate-900 dark:text-white">{card.title}</h3>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{card.description}</p>
               </div>
 
               <div
