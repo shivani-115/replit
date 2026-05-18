@@ -1,12 +1,9 @@
 'use client';
 
 import { FormEvent, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import type { Project } from '@portfolio/shared';
-import {
-  createProject,
-  deleteProject,
-  getProjects,
-} from '@/lib/api';
+import { createProject, deleteProject, getProjects } from '@/lib/api';
 import ProjectCard from '@/components/ProjectCard';
 
 const emptyForm = {
@@ -17,12 +14,24 @@ const emptyForm = {
 };
 
 export default function AdminPage() {
+  const router = useRouter();
+  const [authed, setAuthed] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('admin_token');
+    if (!token) {
+      router.replace('/admin/login');
+      return;
+    }
+    setAuthed(true);
+    loadProjects();
+  }, []);
 
   async function loadProjects() {
     setLoading(true);
@@ -37,15 +46,10 @@ export default function AdminPage() {
     }
   }
 
-  useEffect(() => {
-    loadProjects();
-  }, []);
-
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitting(true);
     setFormError(null);
-
     try {
       await createProject(form);
       setForm(emptyForm);
@@ -67,18 +71,33 @@ export default function AdminPage() {
     }
   }
 
+  function handleLogout() {
+    localStorage.removeItem('admin_token');
+    router.push('/admin/login');
+  }
+
+  if (!authed) return null;
+
   const inputClass =
     'w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20';
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">
-          Admin
-        </h1>
-        <p className="mt-2 text-slate-600 dark:text-slate-400">
-          Add and manage portfolio projects. No auth - POC only.
-        </p>
+      <header className="mb-10 flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">
+            Admin
+          </h1>
+          <p className="mt-2 text-slate-600 dark:text-slate-400">
+            Add and manage portfolio projects.
+          </p>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="rounded-md border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+        >
+          Log out
+        </button>
       </header>
 
       <div className="grid gap-10 lg:grid-cols-[400px,1fr]">
@@ -110,9 +129,7 @@ export default function AdminPage() {
               required
               rows={3}
               value={form.description}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
               className={`${inputClass} resize-y`}
             />
           </div>
@@ -124,9 +141,7 @@ export default function AdminPage() {
             <input
               required
               value={form.techStack}
-              onChange={(e) =>
-                setForm({ ...form, techStack: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, techStack: e.target.value })}
               placeholder="Next.js, NestJS, Prisma"
               className={inputClass}
             />
@@ -143,9 +158,7 @@ export default function AdminPage() {
               type="url"
               required
               value={form.githubUrl}
-              onChange={(e) =>
-                setForm({ ...form, githubUrl: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, githubUrl: e.target.value })}
               placeholder="https://github.com/user/repo"
               className={inputClass}
             />
@@ -198,11 +211,7 @@ export default function AdminPage() {
           {!loading && projects.length > 0 && (
             <div className="grid gap-4 sm:grid-cols-2">
               {projects.map((p) => (
-                <ProjectCard
-                  key={p.id}
-                  project={p}
-                  onDelete={handleDelete}
-                />
+                <ProjectCard key={p.id} project={p} onDelete={handleDelete} />
               ))}
             </div>
           )}

@@ -56,3 +56,8 @@ externalPort = 8000
 deploymentTarget = "vm"
 run = ["pnpm", "run", "start:prod"]
 build = ["sh", "-c", "pnpm install && pnpm --filter api exec prisma generate && pnpm --filter api build && pnpm --filter web build"]
+
+[userenv]
+
+[userenv.shared]
+JWT_SECRET = "portfolio-jwt-secret-change-in-prod"
