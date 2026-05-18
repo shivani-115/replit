@@ -13,10 +13,10 @@ const cards = [
     title: 'Monorepo',
     description: 'pnpm workspaces + Turborepo run web and api side-by-side.',
     detail: 'A single repo, two apps, zero duplication. Shared scripts, dependencies, and types keep everything in sync.',
-    accent: 'from-violet-500 to-purple-600',
-    bg: 'hover:bg-violet-50',
-    border: 'hover:border-violet-300',
-    text: 'text-violet-600',
+    accent: 'from-blue-500 to-blue-700',
+    bg: 'hover:bg-blue-50',
+    border: 'hover:border-blue-300',
+    text: 'text-blue-600',
   },
   {
     icon: (
@@ -70,7 +70,7 @@ export default function FeatureCards() {
               className={[
                 'group relative flex flex-col items-start gap-3 rounded-xl border border-slate-200 bg-white p-6 text-left',
                 'shadow-sm transition-all duration-200 cursor-pointer outline-none',
-                'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-violet-400',
+                'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-400',
                 card.bg,
                 card.border,
                 isOpen ? 'shadow-md' : 'hover:shadow-md hover:-translate-y-0.5',
