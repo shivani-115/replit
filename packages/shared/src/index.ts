@@ -22,6 +22,13 @@ export interface CreateProjectInput {
   githubUrl: string;
 }
 
+export interface UpdateProjectInput {
+  title?: string;
+  description?: string;
+  techStack?: string;
+  githubUrl?: string;
+}
+
 export interface CreateContactInput {
   name: string;
   email: string;
