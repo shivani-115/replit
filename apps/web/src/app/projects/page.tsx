@@ -1,4 +1,4 @@
-import ProjectCard from '@/components/ProjectCard';
+import ProjectsFilter from '@/components/ProjectsFilter';
 import { getProjects } from '@/lib/api';
 import type { Project } from '@portfolio/shared';
 
@@ -29,10 +29,6 @@ export default async function ProjectsPage() {
         <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           <strong className="font-semibold">Could not load projects.</strong>{' '}
           {error}
-          <p className="mt-1 text-red-600/80">
-            Make sure the API is running on{' '}
-            <code className="font-mono">http://localhost:4000</code>.
-          </p>
         </div>
       )}
 
@@ -46,12 +42,8 @@ export default async function ProjectsPage() {
         </div>
       )}
 
-      {projects.length > 0 && (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p) => (
-            <ProjectCard key={p.id} project={p} />
-          ))}
-        </div>
+      {!error && projects.length > 0 && (
+        <ProjectsFilter projects={projects} />
       )}
     </section>
   );
